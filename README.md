@@ -1,4 +1,4 @@
-# Managed Identity Key Vault Client 🛡️
+# Managed Identity Key Vault Client 🔐
 
 
 
@@ -34,12 +34,36 @@ azure-managed-identity-keyvault-lab/
 └── README.md
 ```
 
+## Step 1 Configuration Steps
+
+### - Enable System-Assigned Managed Identity on VM
+- Azure Portal → Virtual Machines → Select VM (vm-hub) → Identity → System assigned → Toggle Status to "On" → Save
+
+![Enable Managed Identity](assets/identity.png)
+
+### - Create Key Vault and Secret
+- Azure Portal → Create Resource → Key Vault → Create
+
+Key Vault created → Go to Secrets → Generate/Import → Name: `mysecretkey` → Value: `Eeee19901999***` → Create
+
+![Create Secret](assets/mysecretkey.JPG)
+
+### -  Open Access Control (IAM)
+- Key Vault (mkyenkeyvault) → Access control (IAM) → Add → Add role assignment
+
+![Access Control](assets/AcessControl.JPG)
+
+### - Select Key Vault Secrets User Role
+- Role tab → Search "Key Vault Secrets User" → Select → Next
+
+![Select Role](assets/role.png)
+
+### - Assign VM Managed Identity to Role
+- Members tab → Assign access to: "Managed identity" → Select members → Choose VM (vm-hub) → Select → Review + assign
+
+![Assign Role](assets/role_assigment.png)
 
 
-## Step 5: Run the Script
-```bash
-python3 lab_identity.py
-```
 
 
 
@@ -51,7 +75,7 @@ python3 lab_identity.py
 VM (vm-hub) --[Managed Identity]--> Key Vault (mkyenkeyvault)
 ```
 
-## Step 1: Install Python venv
+## Step 2: Install Python venv
 ```bash
 sudo apt install python3.12-venv -y
 ```
@@ -66,7 +90,7 @@ Need to get 2429 kB of archives.
 After this operation, 2777 kB of additional disk space will be used.
 ```
 
-## Step 2: Create Virtual Environment
+## Step 3: Create Virtual Environment
 ```bash
 python3 -m venv venv
 ```
@@ -77,7 +101,7 @@ source venv/bin/activate
 (venv) kemal@vm-hub:~$
 ```
 
-## Step 3: Install Azure SDK
+## Step 4: Install Azure SDK
 ```bash
 pip install azure-identity azure-keyvault-secrets
 ```
@@ -101,7 +125,7 @@ cryptography-46.0.3 idna-3.11 isodate-0.7.2 msal-1.34.0 msal-extensions-1.3.1
 pycparser-2.23 requests-2.32.5 typing-extensions-4.15.0 urllib3-2.6.3
 ```
 
-## Step 4: Create Python Script
+## Step 5: Create Python Script
 ```bash
 cat < lab_identity.py
 from azure.identity import DefaultAzureCredential
@@ -135,7 +159,7 @@ if __name__ == "__main__":
 EOF
 ```
 
-## Step 5: Run Script
+## Step 6: Run Script
 ```bash
 python3 lab_identity.py
 ```
@@ -151,5 +175,8 @@ Secret Name : mysecretkey
 Secret Value: AA***REDACTED***
 =============================================
 ```
+
+## License
+MIT License
 
 
